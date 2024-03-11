@@ -1,4 +1,4 @@
-package com.benki.recipefinder.network.lists
+package com.benki.recipefinder.network.models.lists
 
 import com.google.gson.annotations.SerializedName
 
