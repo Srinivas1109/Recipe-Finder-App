@@ -1,5 +1,6 @@
 package com.benki.recipefinder.presentation.onboarding
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -24,19 +25,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.benki.recipefinder.presentation.components.IndicatorContainer
+import com.benki.recipefinder.presentation.components.common.IndicatorContainer
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingContainer(modifier: Modifier = Modifier) {
+fun OnBoardingContainer(
+    modifier: Modifier = Modifier,
+    username: String,
+    updateUsername: (String) -> Unit,
+    onClickGetStarted: () -> Unit
+) {
     val pagerState = rememberPagerState {
         3
     }
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.primaryContainer) {
         Box(
@@ -48,7 +56,7 @@ fun OnBoardingContainer(modifier: Modifier = Modifier) {
                 when (page) {
                     0 -> OnBoardingScreen1()
                     1 -> OnBoardingScreen2()
-                    2 -> OnBoardingScreen3()
+                    2 -> OnBoardingScreen3(username = username, updateUsername = updateUsername)
                 }
             }
             AnimatedVisibility(
@@ -87,11 +95,23 @@ fun OnBoardingContainer(modifier: Modifier = Modifier) {
                 Box(modifier = modifier.fillMaxWidth()) {
                     Button(
                         onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(
-                                    pagerState.currentPage + 1,
-                                    animationSpec = tween(1000)
-                                )
+                            if (pagerState.currentPage < 2) {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(
+                                        pagerState.currentPage + 1,
+                                        animationSpec = tween(1000)
+                                    )
+                                }
+                            } else {
+                                if (username.isNotEmpty()) {
+                                    onClickGetStarted()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Name cannot be empty",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                         },
                         shape = RoundedCornerShape(12.dp),
@@ -121,5 +141,5 @@ fun OnBoardingContainer(modifier: Modifier = Modifier) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun OnBoardingContainerPreview() {
-    OnBoardingContainer()
+    OnBoardingContainer(username = "Srinivas", updateUsername = {}, onClickGetStarted = {})
 }

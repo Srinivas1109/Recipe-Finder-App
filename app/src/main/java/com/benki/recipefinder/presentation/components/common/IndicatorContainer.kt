@@ -1,4 +1,4 @@
-package com.benki.recipefinder.presentation.components
+package com.benki.recipefinder.presentation.components.common
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState

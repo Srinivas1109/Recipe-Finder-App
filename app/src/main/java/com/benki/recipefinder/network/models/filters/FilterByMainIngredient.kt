@@ -7,3 +7,5 @@ data class FilterByMainIngredient(
     @SerializedName("strMealThumb") val strMealThumb: String? = null,
     @SerializedName("idMeal") val idMeal: String? = null
 )
+
+data class FilterByMainIngredientWrapper(val meals: List<FilterByMainIngredient>? = emptyList())

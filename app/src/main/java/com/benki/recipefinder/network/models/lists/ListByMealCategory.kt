@@ -8,3 +8,5 @@ data class ListByMealCategory(
     @SerializedName("strCategoryThumb") val strCategoryThumb: String? = null,
     @SerializedName("strCategoryDescription") val strCategoryDescription: String? = null
 )
+
+data class MealCategories(val categories: List<ListByMealCategory>? = emptyList())

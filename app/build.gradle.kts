@@ -87,6 +87,18 @@ dependencies {
     // Hilt Navigation
     implementation(libs.androidx.hilt.navigation.compose)
 
+    // preferences datastore
+    implementation(libs.androidx.datastore.preferences)
+
+    // Splash screen
+    implementation(libs.androidx.core.splashscreen)
+
+    // Material icons
+    implementation(libs.androidx.material.icons.extended.android)
+
+    // Coil
+    implementation(libs.coil.compose)
+
 }
 
 // Allow references to generated code

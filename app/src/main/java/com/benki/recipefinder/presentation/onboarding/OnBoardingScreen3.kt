@@ -9,23 +9,35 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.benki.recipefinder.R
+import com.benki.recipefinder.presentation.viewmodels.OnBoardingScreenViewModel
 
 @Composable
-fun OnBoardingScreen3(modifier: Modifier = Modifier) {
+fun OnBoardingScreen3(
+    modifier: Modifier = Modifier,
+    username: String,
+    updateUsername: (String) -> Unit,
+) {
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primaryContainer
@@ -50,8 +62,8 @@ fun OnBoardingScreen3(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = modifier.height(16.dp))
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = username,
+                    onValueChange = updateUsername,
                     modifier = modifier.fillMaxWidth(),
                     placeholder = {
                         Text(
@@ -70,8 +82,9 @@ fun OnBoardingScreen3(modifier: Modifier = Modifier) {
                         unfocusedTextColor = MaterialTheme.colorScheme.primary,
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
-
-                        ),
+                    ),
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                    textStyle = TextStyle(fontWeight = FontWeight.SemiBold)
                 )
             }
         }
