@@ -2,10 +2,13 @@ package com.benki.recipefinder.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.benki.recipefinder.data.repository.LocalSavedRecipesRepository
+import com.benki.recipefinder.data.repository.RepositoryContainer
+import com.benki.recipefinder.data.repository.Response
 import com.benki.recipefinder.data.repository.UserPreferencesRepository
 import com.benki.recipefinder.network.models.MealApi
 import com.benki.recipefinder.network.models.filters.FilterByMainIngredient
-import com.benki.recipefinder.network.models.filters.FilterByMainIngredientWrapper
+import com.benki.recipefinder.network.models.filters.toDatabaseMeal
 import com.benki.recipefinder.network.models.lists.ListByMealCategory
 import com.benki.recipefinder.network.models.lists.MealCategories
 import com.benki.recipefinder.network.models.random.RandomMeal
@@ -13,11 +16,9 @@ import com.benki.recipefinder.network.models.search.SearchByName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,13 +32,20 @@ data class HomeScreenUiState(
     val recipes: SearchByName = SearchByName(),
     val mealCategories: MealCategories = MealCategories(),
     val selectedByMealCategory: ListByMealCategory? = null,
-    val mealsByMainIngredient: FilterByMainIngredientWrapper = FilterByMainIngredientWrapper()
+    val mealsByMainIngredient: Response<List<FilterByMainIngredient>> = Response(
+        loading = true,
+        isSuccess = false,
+        errorMessage = null,
+        data = emptyList()
+    )
 )
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val mealApi: MealApi,
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
+    private val repositoryContainer: RepositoryContainer,
+    private val savedRecipesRepository: LocalSavedRecipesRepository
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<HomeScreenUiState> =
         MutableStateFlow(HomeScreenUiState())
@@ -101,18 +109,28 @@ class HomeScreenViewModel @Inject constructor(
     fun getMealByMainIngredient() {
         uiState.value.selectedByMealCategory?.let { selectedCategory ->
             viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    selectedCategory.strCategory?.let { selectedCategoryName ->
-                        viewModelScope.launch {
-                            val mealsByMainIngredient =
-                                mealApi.getMealsByMainIngredient(selectedCategoryName)
-                            _uiState.update {
-                                it.copy(mealsByMainIngredient = mealsByMainIngredient)
-                            }
-                        }
+                selectedCategory.strCategory?.let { selectedCategoryName ->
+                    val mealsByMainIngredient: Response<List<FilterByMainIngredient>> =
+                        repositoryContainer.getMealsByMainIngredient(selectedCategoryName)
+                    _uiState.update {
+                        it.copy(mealsByMainIngredient = mealsByMainIngredient)
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                }
+
+            }
+        }
+    }
+
+    fun saveRecipe(meal: FilterByMainIngredient) {
+        viewModelScope.launch(Dispatchers.IO) {
+            savedRecipesRepository.insertRecipe(meal.toDatabaseMeal().copy(saved = true))
+            uiState.value.selectedByMealCategory?.let { selectedCategory ->
+                selectedCategory.strCategory?.let { selectedCategoryName ->
+                    val mealsByMainIngredient: Response<List<FilterByMainIngredient>> =
+                        repositoryContainer.getMealsByMainIngredient(selectedCategoryName)
+                    _uiState.update {
+                        it.copy(mealsByMainIngredient = mealsByMainIngredient)
+                    }
                 }
             }
         }

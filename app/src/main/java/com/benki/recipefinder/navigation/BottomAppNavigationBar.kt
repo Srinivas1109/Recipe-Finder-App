@@ -6,7 +6,7 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
@@ -17,11 +17,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -84,7 +82,7 @@ fun BottomAppNavigationBar(modifier: Modifier = Modifier, navController: NavCont
                 onClick = { navController.navigate(SAVED_SCREEN_ROUTE) },
                 icon = {
                     Icon(
-                        imageVector = if (route == SAVED_SCREEN_ROUTE) Icons.Filled.Bookmark else Icons.Outlined.Bookmark,
+                        imageVector = if (route == SAVED_SCREEN_ROUTE) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                         contentDescription = "Saved icon"
                     )
                 },

@@ -55,5 +55,14 @@ data class Meal(
     @SerializedName("strSource") val strSource: String? = null,
     @SerializedName("strImageSource") val strImageSource: String? = null,
     @SerializedName("strCreativeCommonsConfirmed") val strCreativeCommonsConfirmed: String? = null,
-    @SerializedName("dateModified") val dateModified: String? = null
+    @SerializedName("dateModified") val dateModified: String? = null,
+    val saved: Boolean = false
 )
+
+fun Meal.toDatabaseMeal(): com.benki.recipefinder.data.database.model.Meal {
+    return com.benki.recipefinder.data.database.model.Meal(
+        idMeal = idMeal!!,
+        strMeal = strMeal,
+        strMealThumb = strMealThumb
+    )
+}

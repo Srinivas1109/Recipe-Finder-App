@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -31,7 +32,8 @@ import com.benki.recipefinder.network.models.filters.FilterByMainIngredient
 @Composable
 fun MealsByMainIngredientsItem(
     modifier: Modifier = Modifier,
-    mealByMainIngredient: FilterByMainIngredient
+    mealByMainIngredient: FilterByMainIngredient,
+    addToSaved: (FilterByMainIngredient) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -71,14 +73,17 @@ fun MealsByMainIngredientsItem(
                     )
                 }
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { addToSaved(mealByMainIngredient) },
                     colors = IconButtonDefaults.outlinedIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = if (mealByMainIngredient.saved) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSecondaryContainer
                     ),
                     modifier = Modifier.align(Alignment.TopEnd),
                 ) {
-                    Icon(imageVector = Icons.Outlined.Bookmark, contentDescription = "bookmark")
+                    Icon(
+                        imageVector = if (mealByMainIngredient.saved) Icons.Outlined.Bookmark else Icons.Outlined.BookmarkBorder,
+                        contentDescription = "bookmark"
+                    )
                 }
             }
         }

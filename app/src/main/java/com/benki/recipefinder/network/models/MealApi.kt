@@ -11,7 +11,7 @@ import retrofit2.http.Query
 
 interface MealApi {
     @GET("lookup.php")
-    suspend fun getMealDetailsById(@Query("i") mealId: Long): DetailedMeal
+    suspend fun getMealDetailsById(@Query("i") mealId: String): DetailedMeal
 
     @GET("random.php")
     suspend fun getRandomMeal(): RandomMeal

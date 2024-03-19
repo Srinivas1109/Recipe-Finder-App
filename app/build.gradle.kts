@@ -99,6 +99,12 @@ dependencies {
     // Coil
     implementation(libs.coil.compose)
 
+    // Room
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+
+    // Coroutines
+    implementation(libs.androidx.room.ktx)
 }
 
 // Allow references to generated code

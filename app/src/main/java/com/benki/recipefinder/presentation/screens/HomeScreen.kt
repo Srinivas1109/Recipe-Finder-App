@@ -73,7 +73,8 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeScreenViewModel = h
             )
             MealsByMainIngredientsList(
                 mealsByMainIngredient = mealsByMainIngredient,
-                selectedCategory = selectedByMealCategory
+                selectedCategory = selectedByMealCategory,
+                addToSaved = viewModel::saveRecipe
             )
         }
     }
