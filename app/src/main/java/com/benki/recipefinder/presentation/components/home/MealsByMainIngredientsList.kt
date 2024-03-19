@@ -26,6 +26,7 @@ fun MealsByMainIngredientsList(
     modifier: Modifier = Modifier,
     mealsByMainIngredient: Response<List<FilterByMainIngredient>>,
     selectedCategory: ListByMealCategory?,
+    navigateToDetails: (String) -> Unit,
     addToSaved: (FilterByMainIngredient) -> Unit
 ) {
     val state = rememberLazyListState()
@@ -49,7 +50,7 @@ fun MealsByMainIngredientsList(
                     .padding(8.dp), state = state
             ) {
                 items(items = mealsByMainIngredient.data) { meal ->
-                    MealsByMainIngredientsItem(mealByMainIngredient = meal, addToSaved = addToSaved)
+                    MealsByMainIngredientsItem(mealByMainIngredient = meal, addToSaved = addToSaved, navigateToDetails = navigateToDetails)
                 }
             }
         } else {

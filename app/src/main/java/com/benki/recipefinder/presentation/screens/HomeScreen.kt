@@ -24,7 +24,11 @@ import com.benki.recipefinder.presentation.components.home.RecipeSearchBar
 import com.benki.recipefinder.presentation.viewmodels.HomeScreenViewModel
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeScreenViewModel = hiltViewModel()) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeScreenViewModel = hiltViewModel(),
+    navigateToDetails: (String) -> Unit
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val name = uiState.username
     val randomMeal = uiState.randomMeal
@@ -74,7 +78,8 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeScreenViewModel = h
             MealsByMainIngredientsList(
                 mealsByMainIngredient = mealsByMainIngredient,
                 selectedCategory = selectedByMealCategory,
-                addToSaved = viewModel::saveRecipe
+                addToSaved = viewModel::saveRecipe,
+                navigateToDetails = navigateToDetails
             )
         }
     }

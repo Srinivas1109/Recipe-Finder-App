@@ -1,4 +1,4 @@
-package com.benki.recipefinder.presentation.components.home
+package com.benki.recipefinder.presentation.components.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BookmarkRemove
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Card
@@ -28,40 +29,40 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.benki.recipefinder.network.models.filters.FilterByMainIngredient
+import com.benki.recipefinder.data.database.model.Meal
 
 @Composable
-fun MealsByMainIngredientsItem(
+fun SavedRecipeItem(
     modifier: Modifier = Modifier,
-    mealByMainIngredient: FilterByMainIngredient,
+    meal: Meal,
     navigateToDetails: (String) -> Unit,
-    addToSaved: (FilterByMainIngredient) -> Unit
+    deleteSaved: (Meal) -> Unit
 ) {
     Card(
         modifier = modifier
-            .width(240.dp)
-            .height(300.dp)
-            .padding(horizontal = 8.dp)
-            .clickable { mealByMainIngredient.idMeal?.let { navigateToDetails(it) } },
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable {
+                navigateToDetails(meal.idMeal)
+            },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.inversePrimary,
             contentColor = MaterialTheme.colorScheme.primary
         )
     ) {
-        mealByMainIngredient.strMeal?.let { mealName ->
+        meal.strMeal?.let { mealName ->
             Box(modifier = Modifier) {
                 Column(
                     modifier = Modifier
-                        .width(240.dp)
+                        .fillMaxWidth()
                 ) {
                     AsyncImage(
-                        model = mealByMainIngredient.strMealThumb,
+                        model = meal.strMealThumb,
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .width(240.dp)
-                            .height(260.dp)
+                            .height(200.dp)
                             .clip(RoundedCornerShape(8.dp)),
                         contentScale = ContentScale.Crop
                     )
@@ -76,16 +77,16 @@ fun MealsByMainIngredientsItem(
                     )
                 }
                 IconButton(
-                    onClick = { addToSaved(mealByMainIngredient) },
+                    onClick = { deleteSaved(meal) },
                     colors = IconButtonDefaults.outlinedIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = if (mealByMainIngredient.saved) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSecondaryContainer
+                        contentColor = if (meal.saved) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSecondaryContainer
                     ),
                     modifier = Modifier.align(Alignment.TopEnd),
                 ) {
                     Icon(
-                        imageVector = if (mealByMainIngredient.saved) Icons.Outlined.Bookmark else Icons.Outlined.BookmarkBorder,
-                        contentDescription = "bookmark"
+                        imageVector = Icons.Filled.BookmarkRemove,
+                        contentDescription = "delete bookmark"
                     )
                 }
             }

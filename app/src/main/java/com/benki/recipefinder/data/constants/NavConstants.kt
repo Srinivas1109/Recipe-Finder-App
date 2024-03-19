@@ -6,4 +6,5 @@ object NavConstants {
     const val SEARCH_SCREEN_ROUTE = "search_screen"
     const val SAVED_SCREEN_ROUTE = "saved_screen"
     const val PROFILE_SCREEN_ROUTE = "profile_screen"
+    const val DETAILED_SCREEN_ROUTE = "detailed_screen"
 }
