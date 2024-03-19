@@ -24,6 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.benki.recipefinder.data.database.model.LastViewed
+import com.benki.recipefinder.network.models.details.toLastViewed
 import com.benki.recipefinder.network.models.search.SearchByName
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +37,8 @@ fun RecipeSearchBar(
     onQueryChange: (String) -> Unit,
     active: Boolean,
     onActiveChange: (Boolean) -> Unit,
+    navigateToDetail: (String) -> Unit,
+    addToLastViewed: (LastViewed) -> Unit,
     onSearch: (String) -> Unit,
 ) {
     SearchBar(
@@ -83,8 +87,9 @@ fun RecipeSearchBar(
                     SearchItem(
                         meal = it,
                         modifier = modifier.padding(horizontal = 0.dp, vertical = 8.dp)
-                    ) {
-
+                    ) { meal ->
+                        addToLastViewed(meal.toLastViewed())
+                        navigateToDetail(meal.idMeal!!)
                     }
                 }
 

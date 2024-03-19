@@ -30,13 +30,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.benki.recipefinder.data.database.model.LastViewed
 import com.benki.recipefinder.data.database.model.Meal
+import com.benki.recipefinder.data.database.model.toLastViewed
 
 @Composable
 fun SavedRecipeItem(
     modifier: Modifier = Modifier,
     meal: Meal,
     navigateToDetails: (String) -> Unit,
+    addToLastViewed: (LastViewed) -> Unit,
     deleteSaved: (Meal) -> Unit
 ) {
     Card(
@@ -44,6 +47,7 @@ fun SavedRecipeItem(
             .fillMaxWidth(0.5f)
             .height(265.dp)
             .clickable {
+                addToLastViewed(meal.toLastViewed())
                 navigateToDetails(meal.idMeal)
             },
         shape = RoundedCornerShape(8.dp),

@@ -1,5 +1,6 @@
 package com.benki.recipefinder.network.models.filters
 
+import com.benki.recipefinder.data.database.model.LastViewed
 import com.benki.recipefinder.data.database.model.Meal
 import com.google.gson.annotations.SerializedName
 
@@ -14,4 +15,12 @@ data class FilterByMainIngredientWrapper(val meals: List<FilterByMainIngredient>
 
 fun FilterByMainIngredient.toDatabaseMeal(): Meal {
     return Meal(idMeal = idMeal!!, strMeal = strMeal, strMealThumb = strMealThumb, saved = saved)
+}
+
+fun FilterByMainIngredient.toLastViewed(): LastViewed {
+    return LastViewed(
+        mealId = idMeal!!,
+        mealName = strMeal!!,
+        thumbnail = strMealThumb!!,
+    )
 }

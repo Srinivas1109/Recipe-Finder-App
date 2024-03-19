@@ -7,13 +7,19 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.benki.recipefinder.data.constants.StorageConstants
 import com.benki.recipefinder.data.database.RecipeDatabase
+import com.benki.recipefinder.data.database.dao.LastViewedDao
 import com.benki.recipefinder.data.database.dao.SavedRecipeDao
+import com.benki.recipefinder.data.database.dao.SearchHistoryDao
+import com.benki.recipefinder.data.repository.LastViewedRepository
+import com.benki.recipefinder.data.repository.LastViewedRepositoryImpl
 import com.benki.recipefinder.data.repository.LocalSavedRecipesRepository
 import com.benki.recipefinder.data.repository.LocalSavedRecipesRepositoryImpl
 import com.benki.recipefinder.data.repository.RemoteRecipesRepository
 import com.benki.recipefinder.data.repository.RemoteRecipesRepositoryImpl
 import com.benki.recipefinder.data.repository.RepositoryContainer
 import com.benki.recipefinder.data.repository.RepositoryContainerImpl
+import com.benki.recipefinder.data.repository.SearchHistoryRepository
+import com.benki.recipefinder.data.repository.SearchHistoryRepositoryImpl
 import com.benki.recipefinder.data.repository.UserPreferencesRepository
 import com.benki.recipefinder.data.repository.UserPreferencesRepositoryImpl
 import com.benki.recipefinder.network.models.MealApi
@@ -60,6 +66,18 @@ object StorageModule {
 
     @Provides
     @Singleton
+    fun provideSearchHistoryDao(recipeDatabase: RecipeDatabase): SearchHistoryDao {
+        return recipeDatabase.searchHistoryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLastViewedDao(recipeDatabase: RecipeDatabase): LastViewedDao {
+        return recipeDatabase.lastViewedDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideRemoteRecipeRepository(mealApi: MealApi): RemoteRecipesRepository =
         RemoteRecipesRepositoryImpl(mealApi = mealApi)
 
@@ -70,12 +88,26 @@ object StorageModule {
 
     @Provides
     @Singleton
+    fun provideSearchHistoryRepository(searchHistoryDao: SearchHistoryDao): SearchHistoryRepository =
+        SearchHistoryRepositoryImpl(searchHistoryDao = searchHistoryDao)
+
+    @Provides
+    @Singleton
+    fun provideLastViewedRepository(lastViewedDao: LastViewedDao): LastViewedRepository =
+        LastViewedRepositoryImpl(lastViewedDao = lastViewedDao)
+
+    @Provides
+    @Singleton
     fun provideRepositoryContainer(
         localSavedRecipesRepository: LocalSavedRecipesRepository,
-        remoteRecipesRepository: RemoteRecipesRepository
+        remoteRecipesRepository: RemoteRecipesRepository,
+        searchHistoryRepository: SearchHistoryRepository,
+        lastViewedRepository: LastViewedRepository,
     ): RepositoryContainer =
         RepositoryContainerImpl(
             localSavedRecipesRepository = localSavedRecipesRepository,
-            remoteRecipesRepository = remoteRecipesRepository
+            remoteRecipesRepository = remoteRecipesRepository,
+            searchHistoryRepository = searchHistoryRepository,
+            lastViewedRepository = lastViewedRepository
         )
 }

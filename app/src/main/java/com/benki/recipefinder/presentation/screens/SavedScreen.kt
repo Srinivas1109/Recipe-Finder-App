@@ -93,11 +93,12 @@ fun SavedScreen(
                         val filteredRecipes = savedRecipes.filter {
                             it.strMeal != null && it.strMeal.lowercase().contains(query.lowercase())
                         }
-                        items(items = filteredRecipes) {
+                        items(items = filteredRecipes, key = { it.idMeal }) {
                             SavedRecipeItem(
                                 meal = it,
                                 deleteSaved = viewModel::deleteSaved,
-                                navigateToDetails = navigateToDetails
+                                navigateToDetails = navigateToDetails,
+                                addToLastViewed = viewModel::saveToLastViewed
                             )
                         }
                     }

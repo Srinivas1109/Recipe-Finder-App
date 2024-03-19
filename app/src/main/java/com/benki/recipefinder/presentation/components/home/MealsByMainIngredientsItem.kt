@@ -28,13 +28,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.benki.recipefinder.data.database.model.LastViewed
 import com.benki.recipefinder.network.models.filters.FilterByMainIngredient
+import com.benki.recipefinder.network.models.filters.toLastViewed
 
 @Composable
 fun MealsByMainIngredientsItem(
     modifier: Modifier = Modifier,
     mealByMainIngredient: FilterByMainIngredient,
     navigateToDetails: (String) -> Unit,
+    addToLastViewed: (LastViewed) -> Unit,
     addToSaved: (FilterByMainIngredient) -> Unit
 ) {
     Card(
@@ -42,7 +45,12 @@ fun MealsByMainIngredientsItem(
             .width(240.dp)
             .height(300.dp)
             .padding(horizontal = 8.dp)
-            .clickable { mealByMainIngredient.idMeal?.let { navigateToDetails(it) } },
+            .clickable {
+                mealByMainIngredient.idMeal?.let {
+                    addToLastViewed(mealByMainIngredient.toLastViewed())
+                    navigateToDetails(it)
+                }
+            },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.inversePrimary,

@@ -62,7 +62,9 @@ fun HomeScreen(
                 onQueryChange = viewModel::onQueryChange,
                 active = searchActive,
                 onActiveChange = viewModel::onActiveChange,
-                recipes = recipes
+                recipes = recipes,
+                navigateToDetail = navigateToDetails,
+                addToLastViewed = viewModel::saveToLastViewed
             ) { searchQuery ->
                 viewModel.onSearch(searchQuery)
             }
@@ -79,7 +81,8 @@ fun HomeScreen(
                 mealsByMainIngredient = mealsByMainIngredient,
                 selectedCategory = selectedByMealCategory,
                 addToSaved = viewModel::saveRecipe,
-                navigateToDetails = navigateToDetails
+                navigateToDetails = navigateToDetails,
+                addToLastViewed = viewModel::saveToLastViewed
             )
         }
     }

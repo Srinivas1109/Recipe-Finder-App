@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.benki.recipefinder.data.database.model.LastViewed
 import com.benki.recipefinder.data.repository.Response
 import com.benki.recipefinder.network.models.filters.FilterByMainIngredient
 import com.benki.recipefinder.network.models.filters.FilterByMainIngredientWrapper
@@ -27,7 +28,8 @@ fun MealsByMainIngredientsList(
     mealsByMainIngredient: Response<List<FilterByMainIngredient>>,
     selectedCategory: ListByMealCategory?,
     navigateToDetails: (String) -> Unit,
-    addToSaved: (FilterByMainIngredient) -> Unit
+    addToLastViewed: (LastViewed) -> Unit,
+    addToSaved: (FilterByMainIngredient) -> Unit,
 ) {
     val state = rememberLazyListState()
     Column(
@@ -50,7 +52,7 @@ fun MealsByMainIngredientsList(
                     .padding(8.dp), state = state
             ) {
                 items(items = mealsByMainIngredient.data) { meal ->
-                    MealsByMainIngredientsItem(mealByMainIngredient = meal, addToSaved = addToSaved, navigateToDetails = navigateToDetails)
+                    MealsByMainIngredientsItem(mealByMainIngredient = meal, addToSaved = addToSaved, navigateToDetails = navigateToDetails, addToLastViewed = addToLastViewed)
                 }
             }
         } else {

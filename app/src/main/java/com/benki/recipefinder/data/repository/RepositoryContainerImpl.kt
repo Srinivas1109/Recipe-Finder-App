@@ -6,7 +6,9 @@ import kotlinx.coroutines.withContext
 
 class RepositoryContainerImpl(
     override val localSavedRecipesRepository: LocalSavedRecipesRepository,
-    override val remoteRecipesRepository: RemoteRecipesRepository
+    override val remoteRecipesRepository: RemoteRecipesRepository,
+    override val searchHistoryRepository: SearchHistoryRepository,
+    override val lastViewedRepository: LastViewedRepository
 ) : RepositoryContainer {
     override suspend fun getMealsByMainIngredient(ingredient: String): Response<List<FilterByMainIngredient>> {
         val response = remoteRecipesRepository.getMealsByMainIngredient(ingredient)

@@ -1,5 +1,7 @@
 package com.benki.recipefinder.network.models.details
 
+import com.benki.recipefinder.data.database.model.LastViewed
+import com.benki.recipefinder.data.database.model.SearchHistory
 import com.google.gson.annotations.SerializedName
 
 data class Meal(
@@ -64,5 +66,22 @@ fun Meal.toDatabaseMeal(): com.benki.recipefinder.data.database.model.Meal {
         idMeal = idMeal!!,
         strMeal = strMeal,
         strMealThumb = strMealThumb
+    )
+}
+
+fun Meal.toSearchHistory(): SearchHistory {
+    return SearchHistory(
+        mealId = idMeal!!,
+        mealName = strMeal!!,
+        thumbnail = strMealThumb!!,
+        area = strArea!!
+    )
+}
+
+fun Meal.toLastViewed(): LastViewed {
+    return LastViewed(
+        mealId = idMeal!!,
+        mealName = strMeal!!,
+        thumbnail = strMealThumb!!,
     )
 }

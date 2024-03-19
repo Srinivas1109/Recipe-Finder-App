@@ -12,3 +12,7 @@ data class Meal(
     val lastModified: Long = System.currentTimeMillis(),
     val saved: Boolean = false
 )
+
+fun Meal.toLastViewed(): LastViewed {
+    return LastViewed(mealId = idMeal, mealName = strMeal!!, thumbnail = strMealThumb!!)
+}

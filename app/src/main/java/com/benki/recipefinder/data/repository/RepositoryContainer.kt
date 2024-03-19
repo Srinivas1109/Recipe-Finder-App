@@ -6,6 +6,8 @@ import com.benki.recipefinder.network.models.filters.FilterByMainIngredientWrapp
 interface RepositoryContainer {
     val localSavedRecipesRepository: LocalSavedRecipesRepository
     val remoteRecipesRepository: RemoteRecipesRepository
+    val searchHistoryRepository: SearchHistoryRepository
+    val lastViewedRepository: LastViewedRepository
 
     suspend fun getMealsByMainIngredient(ingredient: String): Response<List<FilterByMainIngredient>>
 

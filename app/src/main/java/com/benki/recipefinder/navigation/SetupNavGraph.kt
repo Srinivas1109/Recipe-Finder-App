@@ -40,7 +40,9 @@ fun SetupNavGraph(navController: NavHostController, startDestination: String) {
             }
         }
         composable(route = SEARCH_SCREEN_ROUTE) {
-            SearchScreen()
+            SearchScreen(navigateToDetail = { mealId ->
+                navController.navigate("$DETAILED_SCREEN_ROUTE/${mealId}")
+            })
         }
         composable(route = SAVED_SCREEN_ROUTE) {
             SavedScreen(navigateToDetails = { mealId ->

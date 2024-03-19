@@ -13,6 +13,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.benki.recipefinder.data.constants.NavConstants
 import com.benki.recipefinder.data.constants.NavConstants.DETAILED_SCREEN_ROUTE
+import com.benki.recipefinder.data.constants.NavConstants.ON_BOARDING_ROUTE
 import com.benki.recipefinder.navigation.BottomAppNavigationBar
 import com.benki.recipefinder.navigation.SetupNavGraph
 import com.benki.recipefinder.presentation.onboarding.OnBoardingContainer
@@ -24,7 +25,7 @@ fun RecipeApp(startDestination: String) {
     Scaffold(bottomBar = {
         val navBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
         val route = navBackStackEntry?.destination?.route
-        if (route != null && !route.contains(DETAILED_SCREEN_ROUTE)) {
+        if (route != null && !route.contains(DETAILED_SCREEN_ROUTE) && startDestination != ON_BOARDING_ROUTE) {
             BottomAppNavigationBar(navController = navController)
         }
     }) {
