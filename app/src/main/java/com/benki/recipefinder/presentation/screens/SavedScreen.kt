@@ -2,12 +2,16 @@ package com.benki.recipefinder.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Icon
@@ -24,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.benki.recipefinder.presentation.components.common.ItemsSearchBar
 import com.benki.recipefinder.presentation.components.common.SavedRecipeItem
 import com.benki.recipefinder.presentation.viewmodels.SavedScreenViewModel
 
@@ -35,6 +40,7 @@ fun SavedScreen(
     navigateBack: () -> Unit
 ) {
     val savedRecipes by viewModel.savedRecipes.collectAsStateWithLifecycle()
+    val query by viewModel.query.collectAsStateWithLifecycle()
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primaryContainer,
@@ -64,13 +70,30 @@ fun SavedScreen(
             }
             Column(
                 modifier = modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                ItemsSearchBar(
+                    query = query,
+                    onQueryChange = viewModel::updateQuery,
+                    placeholderText = "Search saved recipes...",
+                    onSearch = {}
+                )
+                Spacer(modifier = Modifier.height(16.dp))
                 if (savedRecipes.isNotEmpty()) {
-                    LazyColumn(modifier = modifier.fillMaxSize()) {
-                        items(items = savedRecipes) {
+                    LazyVerticalGrid(
+                        modifier = modifier.fillMaxSize(),
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        val filteredRecipes = savedRecipes.filter {
+                            it.strMeal != null && it.strMeal.lowercase().contains(query.lowercase())
+                        }
+                        items(items = filteredRecipes) {
                             SavedRecipeItem(
                                 meal = it,
                                 deleteSaved = viewModel::deleteSaved,

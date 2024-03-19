@@ -6,8 +6,11 @@ import com.benki.recipefinder.data.database.model.Meal
 import com.benki.recipefinder.data.repository.LocalSavedRecipesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,7 +20,14 @@ class SavedScreenViewModel @Inject constructor(private val localSavedRecipesRepo
     val savedRecipes = localSavedRecipesRepository.getSavedRecipes()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
-    fun deleteSaved(meal: Meal){
+    private val _query = MutableStateFlow("")
+    val query = _query.asStateFlow()
+
+    fun updateQuery(q: String) {
+        _query.update { q }
+    }
+
+    fun deleteSaved(meal: Meal) {
         viewModelScope.launch(Dispatchers.IO) {
             localSavedRecipesRepository.deleteRecipe(meal)
         }

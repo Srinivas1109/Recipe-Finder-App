@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -40,8 +41,8 @@ fun SavedRecipeItem(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+            .fillMaxWidth(0.5f)
+            .height(265.dp)
             .clickable {
                 navigateToDetails(meal.idMeal)
             },
@@ -73,7 +74,9 @@ fun SavedRecipeItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2
                     )
                 }
                 IconButton(
