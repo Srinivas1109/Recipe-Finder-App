@@ -101,7 +101,7 @@ dependencies {
 }
 
 ## Screenshots
-
+<div style="display:flex; flex-direction:row; align-items: center;">
 <img src="screenshots/Onboarding1.png" height="720" width="320"/>
 <img src="screenshots/Onboarding2.png" height="720" width="320"/>
 <img src="screenshots/Onboarding3.png" height="720" width="320"/>
@@ -111,3 +111,4 @@ dependencies {
 <img src="screenshots/SavedRecipes.png" height="720" width="320"/>
 <img src="screenshots/SavedRecipeSearch.png" height="720" width="320"/>
 <img src="screenshots/Profile.png" height="720" width="320"/>
+</div>
